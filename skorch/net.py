@@ -1046,11 +1046,11 @@ class NeuralNet:
           the module and to the ``self.train_split`` call.
 
         """
-        x = to_tensor(x, device=self.device)
-        if isinstance(x, dict):
-            x_dict = self._merge_x_and_fit_params(x, fit_params)
+        x_clone = to_tensor(x, device=self.device)
+        if isinstance(x_clone, dict):
+            x_dict = self._merge_x_and_fit_params(x_clone, fit_params)
             return self.module_(**x_dict)
-        return self.module_(x, **fit_params)
+        return self.module_(x_clone, **fit_params)
 
     def _get_predict_nonlinearity(self):
         """Return the nonlinearity to be applied to the prediction
