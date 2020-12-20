@@ -1193,12 +1193,12 @@ class NeuralNet:
           Whether train mode should be used or not.
 
         """
-        y_true = to_tensor(y_true, device=self.device)
+        y_true_tensor = to_tensor(y_true, device=self.device)
 
         if isinstance(self.criterion_, torch.nn.Module):
             self.criterion_.train(training)
 
-        return self.criterion_(y_pred, y_true)
+        return self.criterion_(y_pred, y_true_tensor)
 
     def get_dataset(self, X, y=None):
         """Get a dataset that contains the input data and is passed to
