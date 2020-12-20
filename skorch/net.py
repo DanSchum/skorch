@@ -701,7 +701,8 @@ class NeuralNet:
         step_accumulator = self.get_train_step_accumulator()
 
         def step_fn():
-            self.optimizer_.zero_grad()
+            #D.S: Removed Zero_grad operation because of Backprob over time
+            #self.optimizer_.zero_grad()
             step = self.train_step_single(Xi, yi, **fit_params)
             step_accumulator.store_step(step)
             return step['loss']
@@ -805,6 +806,10 @@ class NeuralNet:
         is_placeholder_y = uses_placeholder_y(dataset)
 
         batch_count = 0
+
+        #D.S: Added Zero grad operation here to not reset grads in place in active epoch.
+        self.optimizer_.zero_grad()
+
         for data in self.get_iterator(dataset, training=training):
             Xi, yi = unpack_data(data)
             yi_res = yi if not is_placeholder_y else None
